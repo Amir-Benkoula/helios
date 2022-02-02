@@ -24,6 +24,9 @@ import ihm.admin.promotion.ControleurFormation;
 import ihm.admin.promotion.ModeleFormation;
 import ihm.admin.promotion.VueFormation;
 import ihm.composant.MonJMenuItem;
+import ihm.pilote.formation.ControleurPiloteFormation;
+import ihm.pilote.formation.ModelPilote;
+import ihm.pilote.formation.VuePiloteFormation;
 import service.ServiceItf;
 import util.Constante;
 /**
@@ -36,9 +39,9 @@ import util.Constante;
 public class ControleurMenu extends JFrame implements ActionListener {
 	private ServiceItf service;
 	private JMenuBar barreMenus ; 
-	private JMenu administration ; 
+	private JMenu administration, pilote ; 
 	private MonJMenuItem etudiantItem; 
-	private MonJMenuItem promotionItem;
+	private MonJMenuItem promotionItem, piloteListeFormationItem;
 	private Container conteneur;
 	private JPanel panneauCourant;
 	
@@ -67,7 +70,14 @@ public class ControleurMenu extends JFrame implements ActionListener {
 		administration.add(etudiantItem); 
 		etudiantItem.addActionListener (this);  	
 		initIhmComposant();
-		
+
+		pilote = new JMenu("Pilote");
+		pilote.setFont(Constante.menuFont);
+		barreMenus.add(pilote); 
+		piloteListeFormationItem = new MonJMenuItem("Liste formations"); 
+		pilote.add(piloteListeFormationItem); 
+		piloteListeFormationItem.addActionListener(this); 
+
 		String resource = getClass().getClassLoader().getResource("icone.png").getPath();
 	    Image icon = Toolkit.getDefaultToolkit().getImage(resource);  
 	    setIconImage(icon);  
@@ -90,9 +100,24 @@ public class ControleurMenu extends JFrame implements ActionListener {
 			VueFormation vueFormation = new VueFormation(controleurFormation, modeleFormation);
 			panneauCourant = vueFormation;
 		}
+		else if(source == piloteListeFormationItem) {    
+			System.out.println ("** Action option pilote liste formations") ;
+			System.out.println ("** Action option promotion") ; 
+			ModelPilote modelPilote = new ModelPilote();
+			ControleurPiloteFormation controleurPiloteFormation = new ControleurPiloteFormation(service, modelPilote, this);
+			VuePiloteFormation vuePiloteFormation = new VuePiloteFormation(controleurPiloteFormation, modelPilote);
+			panneauCourant = vuePiloteFormation;
+		}
 		conteneur.add(panneauCourant, BorderLayout.CENTER);
 		conteneur.revalidate();
 	} 	
+
+	public void updateDisplay(JPanel vue) {
+		conteneur.remove(panneauCourant);
+		panneauCourant = vue;
+		conteneur.add(panneauCourant, BorderLayout.CENTER);
+		conteneur.revalidate();
+	}
 	public void initIhmComposant() {
 		ModeleEtudiant modeleEtudiant = new ModeleEtudiant();
 		ControleurEtudiant controleurEtudiant = new ControleurEtudiant(service, modeleEtudiant);

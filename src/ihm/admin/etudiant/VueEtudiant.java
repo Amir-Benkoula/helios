@@ -55,6 +55,10 @@ public class VueEtudiant extends MonJPanel implements ActionListener {
 
 		MonJPanel panFlow = new MonJPanel();
 		panFlow.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 10));
+		
+		table = new MonJTable(model);
+		JScrollPane tabScroll = new JScrollPane(table);
+		panTabPlusBtns.add(tabScroll, BorderLayout.CENTER);
 
 		MonJPanel panRecherche = new MonJPanel();
 		panRecherche.setLayout(new FlowLayout());
@@ -62,14 +66,10 @@ public class VueEtudiant extends MonJPanel implements ActionListener {
 		MonJLabelTexte filtrerTexte = new MonJLabelTexte("Filtrer par nom :");
 		MonJButton btnFiltrer = new MonJButton("filtrer");
 		btnFiltrer.addActionListener(this);
+		panRecherche.setFont(Constante.texteFont);
 		panRecherche.add(filtrerTexte);
 		panRecherche.add(filtrerField);
 		panRecherche.add(btnFiltrer);
-
-		
-		table = new MonJTable(model);
-		JScrollPane tabScroll = new JScrollPane(table);
-		panTabPlusBtns.add(tabScroll, BorderLayout.CENTER);
 		panTabPlusBtns.add(panRecherche, BorderLayout.NORTH);
 
 		MonJPanel panneauBtn = new MonJPanel();
@@ -94,6 +94,11 @@ public class VueEtudiant extends MonJPanel implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		System.out.println("actionPerformed - Action boutons supprimer/afficher/modifier");
+		if(e.getSource() == btnFiltrer){
+			System.out.println("filtrer étudiants");
+			String nom = filtrerField.getText();
+			controleur.trierEtudiant(nom);
+		}
 		int index = table.getSelectedRow();
 		if(index != -1) {
 			if(e.getSource() == btnSupprimer){

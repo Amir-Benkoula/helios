@@ -10,6 +10,7 @@ import javax.persistence.Query;
 import entite.Etudiant;
 import entite.EtudiantWhithAcronyme;
 import entite.Formation;
+import entite.Module;
 import repository.EtudiantRepositoryItf;
 import repository.FormationRepository;
 import util.EntityManagerUtil;
@@ -23,6 +24,8 @@ import util.EntityManagerUtil;
 public class Service implements ServiceItf {
 	private FormationRepository formationRepository;
 	private EtudiantRepositoryItf etudiantRepository;
+	private List<Formation> formations;
+
 	
 	/**
 	 * Est initialisé avec les composants dao.
@@ -30,6 +33,7 @@ public class Service implements ServiceItf {
 	 * @param etudiantRepository composant dao Etudiant
 	 */
 	public Service(FormationRepository formationRepository, EtudiantRepositoryItf etudiantRepository) {
+		formations = new ArrayList<>();
 		this.formationRepository = formationRepository;
 		this.etudiantRepository = etudiantRepository;
 	}
@@ -59,6 +63,14 @@ public class Service implements ServiceItf {
 		formationRepository.delete(acronyme);
 	}
 	
+	private Formation findFormationByAcronyme(String acronyme) {
+		for(Formation formation : formations) {
+			if(formation.getAcronyme().equals(acronyme))
+				return formation;
+		}
+		return null;
+	}
+
 	@Override
 	public List<Formation> readAllSansEtudiant() {
 		return formationRepository.readAllSansEtudiant();
@@ -118,5 +130,10 @@ public class Service implements ServiceItf {
 			etudiantWhithAcronymes.add(new EtudiantWhithAcronyme(etudiants.get(i)));
 		}
 		return etudiantWhithAcronymes;
+	}
+	@Override
+	public void ajouterModuleFormation(Module module, String acronyme) {
+		Formation formation = findFormationByAcronyme(acronyme);
+		formation.add(module);
 	}
 }

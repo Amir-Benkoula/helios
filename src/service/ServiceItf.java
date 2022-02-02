@@ -4,6 +4,7 @@ import java.util.List;
 import entite.Etudiant;
 import entite.EtudiantWhithAcronyme;
 import entite.Formation;
+import entite.Module;
 
 /**
  * Interface composant service. 
@@ -30,6 +31,9 @@ public interface ServiceItf {
 	List<EtudiantWhithAcronyme> readAllEtudiantWithAcronyme();
 	List<EtudiantWhithAcronyme> readLikeName(String chaine);
 	
+
+	//MODULE
+	void ajouterModuleFormation(Module module, String acronyme);
 }
 
 	
