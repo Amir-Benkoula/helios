@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;
 
 /**
- * Classe métier formation. Association Formation/Etudiant bidirectionnelle.
+ * Classe mï¿½tier formation. Association Formation/Etudiant bidirectionnelle.
  * @author tophe
  * @version 1.0
  *
@@ -21,6 +21,7 @@ public class Formation implements Serializable {
 	@Id
 	private String acronyme;  
 	private String intitule;
+	private List<Module> modules;
 	@OneToMany(mappedBy="formation", cascade = CascadeType.ALL)
 	@OrderBy("nom ASC")
 	private List<Etudiant> etudiants; 
@@ -38,6 +39,9 @@ public class Formation implements Serializable {
 	}
 	public void add(Etudiant etudiant) {
 		etudiants.add(etudiant);
+	}
+	public void add(Module module) {
+		modules.add(module);
 	}
 	public void suppr(Etudiant etudiant) {
 		for(int i=0; i<etudiants.size(); i++) {
@@ -78,5 +82,11 @@ public class Formation implements Serializable {
 	}
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	public List<Module> getModules() {
+		return modules;
+	}
+	public void setModules(List<Module> modules) {
+		this.modules = modules;
 	}
 }

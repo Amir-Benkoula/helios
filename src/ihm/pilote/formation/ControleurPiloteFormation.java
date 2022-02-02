@@ -7,14 +7,14 @@ import entite.Etudiant;
 import entite.EtudiantWhithAcronyme;
 import entite.Formation;
 import entite.Module;
-import ihm.IhmPrincipale;
+import ihm.ControleurMenu;
 import service.ServiceItf;
 
 public class ControleurPiloteFormation {
 	private ModelPilote modelPilote;
-	private ServiceItf service;
-	private IhmPrincipale ihmPrincipale;
-	public ControleurPiloteFormation(ServiceItf service, ModelPilote modelPilote, IhmPrincipale ihmPrincipale) {
+	private ServiceItf  service;
+	private ControleurMenu ihmPrincipale;
+	public ControleurPiloteFormation(ServiceItf service, ModelPilote modelPilote, ControleurMenu ihmPrincipale) {
 		System.out.println("Constructeur ControleurPromotion");
 		this.service = service;
 		this.modelPilote = modelPilote;
@@ -24,7 +24,7 @@ public class ControleurPiloteFormation {
 		String[] strAcronymes = service.readAllAcronyme().toArray(new String[0]);
 		modelPilote.setStrAcronymes(strAcronymes);
 		
-		Formation formation = service.readAvecEtudiant(strAcronymes[0]);
+		Formation formation = service.readSansEtudiant(strAcronymes[0]);
 		modelPilote.setFormation(formation);
 		int indexFormation = getIndexFormation(formation, strAcronymes);
 		modelPilote.setIndex(indexFormation);
@@ -43,7 +43,7 @@ public class ControleurPiloteFormation {
 		String[] strAcronymes = modelPilote.getStrAcronymes();
 		String acronyme = strAcronymes[index];
 		System.out.println("ControleurPiloteFormation - seclectFormation acronyme=" + acronyme);
-		Formation formation = service.readAvecEtudiant(acronyme);
+		Formation formation = service.readSansEtudiant(acronyme);
 		System.out.println("ControleurPiloteFormation - seclectFormation formation=" + formation);
 		modelPilote.setFormation(formation);
 		int indexFormation = getIndexFormation(formation, strAcronymes);
@@ -54,7 +54,7 @@ public class ControleurPiloteFormation {
 	}
 	public void ajouterModule(Module module, String acronyme) {
 		service.ajouterModuleFormation(module, acronyme);
-		Formation formation = service.readAvecEtudiant(acronyme);
+		Formation formation = service.readSansEtudiant(acronyme);
 		modelPilote.setFormation(formation);
 	}
 }

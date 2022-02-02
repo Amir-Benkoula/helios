@@ -1,4 +1,4 @@
-package ihm.formation;
+package ihm.pilote.formation;
 
 import java.awt.BorderLayout;
 import java.awt.Button;
@@ -110,7 +110,7 @@ class PanneauFormulaireModule extends JPanel implements ActionListener {
 	public JPanel getModulePanel() {		
 		JPanel panel = new JPanel();
 		panel.setLayout (new GridLayout(1, 2, 20, 20));
-		panel.add(new JLabel("Intitulï¿½ :")).setFont(Constante.texteFont);
+		panel.add(new JLabel("Intitulé :")).setFont(Constante.texteFont);
 		intituleField = new JTextField(10);
 		panel.add(intituleField).setFont(Constante.texteFont);
 
